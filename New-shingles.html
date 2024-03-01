@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roofing Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: auto;
+font-size: 20 px ; 
+        } 
+      #container{ 
+      display: flex;
+            justify-content: center;
+            align-items: center; }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+.complicated-box { 
+display:flex; 
+flex-direction: row ; 
+gap:15px ;
+margin-bottom:10px ; }
+.complicated {
+  width:20px;
+    height:20px;
+}  
+    </style>
+</head>
+<body>
+<div id='container'> 
+    <form id="roofingForm">
+        <!-- Input fields here... -->
+
+        <label for="ft">Square Feet:</label>
+        <input type="number" id="ft" value="1748" required>
+
+        <label for="slope">Slope:</label>
+        <input type="text" id="slope" value="4/12" required>
+
+        <label for="hip">Hip:</label>
+        <input type="number" id="hip" value="0" required>
+
+        <label for="ridge">Ridge:</label>
+        <input type="number" id="ridge" value="57" required>
+
+        <label for="optimum">Optimum:</label>
+        <input type="number" id="optimum" value="2" required>
+
+        <label for="plumbing">Plumbing:</label>
+        <input type="number" id="plumbing" value="4" required>
+
+        <label for="valley">Valley:</label>
+        <input type="number" id="valley" value="20" required>
+
+        <label for="drip">Drip Edge:</label>
+        <input type="number" id="drip" value="1" required>
+
+        <label for="chimney">Chimney:</label>
+        <input type="number" id="chimney" value="4" required>
+
+        <label for="stormshield">Stormshield:</label>
+        <input type="number" id="stormshield" value="5" required>
+
+        <label for="profit">Profit (%):</label>
+        <input type="number" id="profit" value="32" required>
+
+        <!-- Add other input fields as needed -->
+<div class='complicated-box'>
+      <label for = 'roofType'> Complicated? </label> 
+      <input type="checkbox" id="roofType" value="complicated" class="complicated">
+      </div> 
+
+        <button type="button" onclick="calculateAndDisplayResults()">Calculate</button>
+
+        <div id="result"></div>
+    </form>
+  </div>  
+
+    <script>
+        // Declare variables outside the function
+        let valley1, cement, synt, bundles, container, nails, hipPercent, ridgePercent, hipAndRidge, days, bundlesPrice, nailsPrice, hipAndRidgePrice, syntPrice, stormshieldPrice, valleyPrice, cementPrice, dripPrice, chimneyPrice, daysPrice, containerPrice, optimumPrice, plumbingPrice, Price, EP;
+
+        function calculateAndDisplayResults() {
+            // Retrieve input values
+            let ft = parseInt(document.getElementById('ft').value);
+            let slope = document.getElementById('slope').value;
+            let hip = parseInt(document.getElementById('hip').value);
+            let ridge = parseInt(document.getElementById('ridge').value);
+            let optimum = parseInt(document.getElementById('optimum').value);
+            let plumbing = parseInt(document.getElementById('plumbing').value);
+            let valley = parseInt(document.getElementById('valley').value);
+            let drip = parseInt(document.getElementById('drip').value);
+            let chimney = parseInt(document.getElementById('chimney').value);
+            let stormshield = parseInt(document.getElementById('stormshield').value);
+            let profit = parseInt(document.getElementById('profit').value);
+parseInt(document.getElementById('profit').value);
+           let roofTypeCheckbox = document.getElementById('roofType');
+ 
+
+            // Perform your calculations...
+            valley1 = Math.ceil((valley * 1.1) / 9);
+            cement = Math.ceil(valley1 / 4);
+            synt = Math.ceil(ft / 1000);
+            bundles = Math.ceil(ft / 33.3);
+            container = '';
+
+            if (bundles <= 65) {
+                container = '10 yards';
+            } else if (bundles > 65 && bundles <= 90) {
+                container = '15 yards';
+            } else if (bundles >= 91) {
+                container = '20 yards';
+            }
+
+            nails = Math.ceil(bundles / 30);
+            hipPercent = Math.ceil(hip * 1.1);
+            ridgePercent = Math.ceil(ridge * 1.1);
+            hipAndRidge = Math.ceil((hipPercent + ridgePercent) / 36.5);
+
+             if (roofTypeCheckbox.checked) {
+                // If checked, adjust the days calculation
+                if (slope === '4/12' || slope === '5/12' || slope === '6/12' || slope === '7/12' || slope === '8/12') {
+                    days = Math.ceil(bundles / 45);
+                } else if (slope >= '9/12') {
+                    days = Math.ceil(bundles / 30);
+                } else {
+                    console.log(`Invalid slope: ${slope}`);
+                }
+            } else {
+                // If not checked, use the original days calculation
+                if (slope === '4/12' || slope === '5/12' || slope === '6/12' || slope === '7/12' || slope === '8/12') {
+                    days = Math.ceil(bundles / 60);
+                } else if (slope >= '9/12') {
+                    days = Math.ceil(bundles / 35);
+                } else {
+                    console.log(`Invalid slope: ${slope}`);
+                }
+            }
+
+            // Pricing calculations...
+            bundlesPrice = bundles * 42;
+            nailsPrice = nails * 40;
+            hipAndRidgePrice = hipAndRidge * 60;
+            syntPrice = synt * 75;
+            stormshieldPrice = stormshield * 75;
+            valleyPrice = valley1 * 15;
+            cementPrice = cement * 30;
+            dripPrice = drip * 100;
+            chimneyPrice = chimney * 35;
+            daysPrice = days * 1600;
+            containerPrice = 0;
+
+            if (container === '10 yards') {
+                containerPrice = 500;
+            } else if (container === '15 yards') {
+                containerPrice = 600;
+            } else if (container === '20 yards') {
+                containerPrice = 700;
+            }
+
+            optimumPrice = optimum * 120;
+            plumbingPrice = plumbing * 30;
+
+            Price = bundlesPrice + nailsPrice + hipAndRidgePrice + syntPrice + stormshieldPrice + valleyPrice + cementPrice + dripPrice + chimneyPrice + daysPrice + containerPrice + optimumPrice + plumbingPrice;
+
+            EP = Math.ceil(Price / (1 - profit / 100));
+
+            // Display the results
+            document.getElementById('result').innerHTML =
+                `<p>Number of Bundles: ${bundles}, Price: $${bundlesPrice}</p>` +
+                `<p>Nails: ${nails}, Price: $${nailsPrice}</p>` +
+                `<p>Hip and Ridge: ${hipAndRidge}, Price: $${hipAndRidgePrice}</p>` +
+                `<p>Synthetic Paper: ${synt}, Price: $${syntPrice}</p>` +
+                `<p>Stormshield: ${stormshield}, Price: $${stormshieldPrice}</p>` +
+                `<p>Valleys: ${valley1}, Price: $${valleyPrice}</p>` +
+                `<p>Cement: ${cement}, Price: $${cementPrice}</p>` +
+                `<p>Drip Edge: ${drip}, Price: $${dripPrice}</p>` +
+                `<p>Chimney Flashing: ${chimney}, Price: $${chimneyPrice}</p>` +
+                `<p>Labour Days: ${days}, Price: $${daysPrice}</p>` +
+                `<p>Container: ${container}, Price: $${containerPrice}</p>` +
+                `<p>Optimum Big: ${optimum}, Price: $${optimumPrice}</p>` +
+                `<p>Plumbing: ${plumbing}, Price: $${plumbingPrice}</p>` +
+                `<p>Total Price: $${Price}</p>` +
+                `<p>Estimation: $${EP}</p>`;
+        }
+    </script>
+
+</body>
+</html>
